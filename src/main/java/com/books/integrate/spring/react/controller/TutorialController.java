@@ -88,6 +88,25 @@ public class TutorialController {
 	}
 
 	/**
+	 *Function getTutorialByPrice
+	 * @param price
+	 * @return
+	 */
+	@GetMapping("/tutorials/find-by-price/{price}")
+	public ResponseEntity<List<Tutorial>> getTutorialByPrice(@PathVariable("price") Long price) {
+		List<Tutorial> tutorialsByPriceData = tutorialRepository.findByPrice(price);
+		try{
+			if (!tutorialsByPriceData.isEmpty()) {
+				return new ResponseEntity<>(tutorialsByPriceData, HttpStatus.OK);
+			}
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}catch(Exception e){
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+
+	/**
 	 * Function updateTutorialByTitle
 	 * @param title
 	 * @param tutorial
@@ -153,7 +172,5 @@ public class TutorialController {
 			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
 	}
-
-
 
 }
