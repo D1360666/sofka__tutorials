@@ -11,5 +11,5 @@ public interface TutorialRepository extends JpaRepository<Tutorial, Long> {
 
 	List<Tutorial> findByTitle(String title);
 
-	List<Tutorial> findByPrice(Long price);
+	List<Tutorial> findByPrice(Double price);
 }

@@ -93,7 +93,7 @@ public class TutorialController {
 	 * @return
 	 */
 	@GetMapping("/tutorials/find-by-price/{price}")
-	public ResponseEntity<List<Tutorial>> getTutorialByPrice(@PathVariable("price") Long price) {
+	public ResponseEntity<List<Tutorial>> getTutorialByPrice(@PathVariable("price") Double price) {
 		List<Tutorial> tutorialsByPriceData = tutorialRepository.findByPrice(price);
 		try{
 			if (!tutorialsByPriceData.isEmpty()) {
@@ -104,7 +104,6 @@ public class TutorialController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
 
 	/**
 	 * Function updateTutorialByTitle
@@ -158,6 +157,25 @@ public class TutorialController {
 		}
 
 	}
+
+	/**
+	 * Eliminando por titulo
+	 * @return ResponseEntity
+	 */
+	@DeleteMapping("/tutorials/{title}")
+	public ResponseEntity<String> deleteTutorialbyTitle(@PathVariable("title") String title) {
+		try {
+
+			List<Tutorial> tutorialDataByTitle = tutorialRepository.findByTitle(title);
+			for(Tutorial tutorial : tutorialDataByTitle){
+				tutorialRepository.deleteById(tutorial.getId());
+			}
+			return new ResponseEntity<>("Tutorials with title '"+title+"' deleted succesfully!", HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+
 
 	@GetMapping("/tutorials/published")
 	public ResponseEntity<List<Tutorial>> findByPublished() {
